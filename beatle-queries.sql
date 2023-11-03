@@ -25,6 +25,12 @@ WHERE clickTrackID =3
 ORDER BY measureNum
 ;
 
+--Get a specific measure from a specific click track
+SELECT *
+FROM Measure
+WHERE measureNum = 1
+AND clickTrackID = 2
+
 -- get all of the click tracks of a sepcific user ordered by date
 SELECT *
 FROM clickTrack
@@ -40,3 +46,5 @@ FROM theUser
 SELECT password
 FROM theUser
 WHERE userID = 3
+
+
