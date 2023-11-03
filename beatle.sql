@@ -72,3 +72,4 @@ INSERT INTO Marker VALUES (0, 0, 'Fiddle Part');
 INSERT INTO Marker VALUES (1, 1, 'Amazing Part');
 INSERT INTO Marker VALUES (2, 2, 'Great Part');
 INSERT INTO Marker VALUES (3, 3, 'Holy Part');
+
