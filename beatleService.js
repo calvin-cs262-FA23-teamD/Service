@@ -33,5 +33,5 @@ function returnDataOr404(res, data) {
 }
 
 function readHelloMessage(req, res) {
-    res.send('Sup motherfuckers!');
+    res.send('Sup');
 }
