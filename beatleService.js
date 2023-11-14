@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 const router = express.Router();
 router.use(express.json());
 
-router.get("/test", readHelloMessage);
+router.get("/", readHelloMessage);
 
 app.use(router);
 app.listen(port, () => console.log(`Listening on port ${port}`));
