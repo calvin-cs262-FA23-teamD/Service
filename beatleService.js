@@ -18,7 +18,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("/", readHelloMessage);
-router.get('/theUsers', readtheUsers);
+router.get('/theUsers/', readtheUsers);
 router.get('/theUser/:id', readtheUser);
 
 app.use(router);
