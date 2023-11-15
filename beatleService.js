@@ -18,6 +18,8 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("/", readHelloMessage);
+router.get('/theUsers', readtheUsers);
+router.get('/theUser/:id', readtheUser);
 
 app.use(router);
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -33,5 +35,25 @@ function returnDataOr404(res, data) {
 }
 
 function readHelloMessage(req, res) {
-    res.send('Sup');
+    res.send('I give you, The Beatle!');
 }
+
+function readtheUsers(req, res, next) {
+    db.many('SELECT * FROM theUser')
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
+
+function readtheUser(req, res, next) {
+    db.oneOrNone('SELECT * FROM theUser WHERE id=${id}', req.params)
+      .then((data) => {
+        returnDataOr404(res, data);
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
