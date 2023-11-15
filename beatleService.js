@@ -39,7 +39,7 @@ function readHelloMessage(req, res) {
 }
 
 function readtheUsers(req, res, next) {
-    db.many('SELECT * FROM theuser')
+    db.many('SELECT * FROM theUser')
       .then((data) => {
         res.send(data);
       })
@@ -49,7 +49,7 @@ function readtheUsers(req, res, next) {
   }
 
 function readtheUser(req, res, next) {
-    db.oneOrNone('SELECT * FROM theuser WHERE id=${id}', req.params)
+    db.oneOrNone('SELECT * FROM theUser WHERE id=${id}', req.params)
       .then((data) => {
         returnDataOr404(res, data);
       })
