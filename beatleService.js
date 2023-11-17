@@ -44,9 +44,9 @@ function readallUsers(req, res, next) {
     .then((data) => {
       res.send(data);
     })
-    .catch((err) => {
-      next(err);
-    });
+    //.catch((err) => {
+    //  next(err);
+    //});
 }
 
 function readtheUser(req, res, next) {
