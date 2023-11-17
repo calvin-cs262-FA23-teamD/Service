@@ -40,17 +40,17 @@ function readHelloMessage(req, res) {
 }
 
 function readallUsers(req, res, next) {
-  db.many('SELECT * FROM theUser')
+  db.many('SELECT * FROM theUser;')
     .then((data) => {
       res.send(data);
     })
-    //.catch((err) => {
-    //  next(err);
-    //});
+    .catch((err) => {
+      next(err);
+    });
 }
 
 function readtheUser(req, res, next) {
-  db.oneOrNone('SELECT * FROM theUser WHERE id=${id}', req.params)
+  db.oneOrNone('SELECT * FROM theUser WHERE id=${id};', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
