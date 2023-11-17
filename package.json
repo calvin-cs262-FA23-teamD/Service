@@ -1,4 +1,5 @@
 {
+    "main": "beatleService.js",
     "scripts": {
         "start": "node beatleService.js"
     },
