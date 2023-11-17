@@ -50,7 +50,7 @@ function readallUsers(req, res, next) {
 }
 
 function readtheUser(req, res, next) {
-  db.oneOrNone('SELECT * FROM theUser WHERE id=${id};', req.params)
+  db.oneOrNone('SELECT * FROM theUser WHERE id=${id}', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
