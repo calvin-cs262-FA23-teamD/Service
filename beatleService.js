@@ -20,7 +20,7 @@ router.use(express.json());
 
 router.get("/", readHelloMessage);
 //theUser vs. theUsers?
-router.get('/theUsers', readtheUsers);
+router.get('/theUser', readtheUsers);
 router.get('/theUser/:id', readtheUser);
 
 app.use(router);
