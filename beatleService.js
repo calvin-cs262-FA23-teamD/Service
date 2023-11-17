@@ -19,8 +19,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("/", readHelloMessage);
-//theUser vs. theUsers?
-router.get('/theUser', readtheUsers);
+router.get('/allUsers', readallUsers);
 router.get('/theUser/:id', readtheUser);
 
 app.use(router);
@@ -40,7 +39,7 @@ function readHelloMessage(req, res) {
   res.send('I give you, The Beatle!');
 }
 
-function readtheUsers(req, res, next) {
+function readallUsers(req, res, next) {
   db.many('SELECT * FROM theUser')
     .then((data) => {
       res.send(data);
