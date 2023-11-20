@@ -70,6 +70,26 @@ function updateUser(req, res, next) {
     });
 }
 
+function createUser(req, res, next) {
+  db.one('INSERT INTO Player(username, password) VALUES (${username}, ${password}) RETURNING id', req.body)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function deleteUser(req, res, next) {
+  db.oneOrNone('DELETE FROM Player WHERE id=${id} RETURNING id', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 // clickTrack related operations.
 function readallClickTracks(req, res, next) {
   db.many('SELECT * FROM clicktrack;')
@@ -170,7 +190,9 @@ router.get('/', readHelloMessage);
 
 router.get('/allUsers', readallUsers);
 router.get('/theUser/:id', readtheUser);
-router.get('/updateUser/:username/:password', updateUser);
+router.get('/updateUser/:id', updateUser);
+router.post('/makeUser', createUser);
+router.delete('/delUser/:id', deleteUser);
 
 router.get('/allClickTracks', readallClickTracks);
 router.get('/aClickTrack/:id', readaClickTrack);
