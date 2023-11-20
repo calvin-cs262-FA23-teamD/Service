@@ -41,7 +41,7 @@ function readHelloMessage(req, res) {
 
 // theUser related operations.
 function readallUsers(req, res, next) {
-  db.many('SELECT * FROM theUser;')
+  db.many('SELECT * FROM theuser;')
     .then((data) => {
       res.send(data);
     })
@@ -51,7 +51,7 @@ function readallUsers(req, res, next) {
 }
 
 function readtheUser(req, res, next) {
-  db.oneOrNone('SELECT * FROM theUser WHERE id=${id}', req.params)
+  db.oneOrNone('SELECT * FROM theuser WHERE id=${id}', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -61,7 +61,7 @@ function readtheUser(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-  db.oneOrNone('UPDATE theUser SET password=${body.password}, username=${body.username} WHERE id=${params.id} RETURNING id', req)
+  db.oneOrNone('UPDATE theuser SET password=${body.password}, username=${body.username} WHERE id=${params.id} RETURNING id', req)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -71,7 +71,7 @@ function updateUser(req, res, next) {
 }
 
 function createUser(req, res, next) {
-  db.one('INSERT INTO Player(username, password) VALUES (${username}, ${password}) RETURNING id', req.body)
+  db.one('INSERT INTO theuser(username, password) VALUES (${username}, ${password}) RETURNING id', req.body)
     .then((data) => {
       res.send(data);
     })
@@ -81,7 +81,7 @@ function createUser(req, res, next) {
 }
 
 function deleteUser(req, res, next) {
-  db.oneOrNone('DELETE FROM Player WHERE id=${id} RETURNING id', req.params)
+  db.oneOrNone('DELETE FROM theuser WHERE id=${id} RETURNING id', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -111,6 +111,36 @@ function readaClickTrack(req, res, next) {
     });
 }
 
+function updateClickTrack(req, res, next) {
+  db.oneOrNone('UPDATE clicktrack SET name=${body.name}, date=${body.date} WHERE id=${params.id} RETURNING id', req)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function createClickTrack(req, res, next) {
+  db.one('INSERT INTO clicktrack(userID, name, date) VALUES (${userID}, ${name}, ${date}) RETURNING id', req.body)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function deleteClickTrack(req, res, next) {
+  db.oneOrNone('DELETE FROM clicktrack WHERE id=${id} RETURNING id', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 // measure related operations.
 function readallMeasures(req, res, next) {
   db.many('SELECT * FROM measure;')
@@ -124,6 +154,38 @@ function readallMeasures(req, res, next) {
 
 function readaMeasure(req, res, next) {
   db.oneOrNone('SELECT * FROM measure WHERE id=${id}', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+//
+function updateMeasure(req, res, next) {
+  db.oneOrNone('UPDATE measure SET measurenum=${body.clickTrackID}, timesig=${body.timesig}, tempo=${body.tempo}, sound=${body.sound} WHERE id=${params.id} RETURNING id', req)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+//
+function createMeasure(req, res, next) {
+  db.one('INSERT INTO measure(clickTrackID, measurenum, timesig, tempo, sound) VALUES (${clickTrackID}, ${measurenum}, ${timesig}, ${tempo}, ${sound}) RETURNING id', req.body)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function deleteMeasure(req, res, next) {
+  db.oneOrNone('DELETE FROM measure WHERE id=${id} RETURNING id', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -154,7 +216,7 @@ function readaMarker(req, res, next) {
 }
 
 function updateMarker(req, res, next) {
-  db.oneOrNone('UPDATE marker SET clickTrackID=${body.clickTrackID}, name=${body.name} WHERE id=${params.id} RETURNING id', req)
+  db.oneOrNone('UPDATE marker SET name=${body.name} WHERE id=${params.id} RETURNING id', req)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -183,39 +245,7 @@ function deleteMarker(req, res, next) {
     });
 }
 
-/* Just copied from the example repo, will need to adjust for all out SQL shit
-function updatePlayer(req, res, next) {
-  db.oneOrNone('UPDATE Player SET email=${body.email},
-  name=${body.name} WHERE id=${params.id} RETURNING id', req)
-    .then((data) => {
-      returnDataOr404(res, data);
-    })
-    .catch((err) => {
-      next(err);
-    });
-}
-
-function createPlayer(req, res, next) {
-  db.one('INSERT INTO Player(email, name) VALUES (${email}, ${name}) RETURNING id', req.body)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      next(err);
-    });
-}
-
-function deletePlayer(req, res, next) {
-  db.oneOrNone('DELETE FROM Player WHERE id=${id} RETURNING id', req.params)
-    .then((data) => {
-      returnDataOr404(res, data);
-    })
-    .catch((err) => {
-      next(err);
-    });
-}
-*/
-
+// Links
 router.get('/', readHelloMessage);
 
 router.get('/allUsers', readallUsers);
@@ -226,18 +256,18 @@ router.delete('/delUser/:id', deleteUser);
 
 router.get('/allClickTracks', readallClickTracks);
 router.get('/aClickTrack/:id', readaClickTrack);
+router.get('/updateClickTrack/:id', updateClickTrack);
+router.post('/makeClickTrack', createClickTrack);
+router.delete('/delClickTrack/:id', deleteClickTrack);
 
 router.get('/allMeasures', readallMeasures);
 router.get('/aMeasure/:id', readaMeasure);
+router.put('/updateMeasure/:id', updateMeasure);
+router.post('/makeMeasure', createMeasure);
+router.delete('/delMeasure/:id', deleteMeasure);
 
 router.get('/allMarkers', readallMarkers);
 router.get('/aMarker/:id', readaMarker);
 router.get('/updateMarker/:id', updateMarker);
 router.post('/makeMarker', createMarker);
 router.delete('/delMarker/:id', deleteMarker);
-
-/*
-router.put('/players/:id', updatePlayer);
-router.post('/players', createPlayer);
-router.delete('/players/:id', deletePlayer);
-*/
