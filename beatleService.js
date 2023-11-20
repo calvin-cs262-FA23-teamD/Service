@@ -153,6 +153,36 @@ function readaMarker(req, res, next) {
     });
 }
 
+function updateMarker(req, res, next) {
+  db.oneOrNone('UPDATE marker SET clickTrackID=${body.clickTrackID}, name=${body.name} WHERE id=${params.id} RETURNING id', req)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function createMarker(req, res, next) {
+  db.one('INSERT INTO marker(clickTrackID, name) VALUES (${clickTrackID}, ${name}) RETURNING id', req.body)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function deleteMarker(req, res, next) {
+  db.oneOrNone('DELETE FROM marker WHERE id=${id} RETURNING id', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 /* Just copied from the example repo, will need to adjust for all out SQL shit
 function updatePlayer(req, res, next) {
   db.oneOrNone('UPDATE Player SET email=${body.email},
@@ -202,6 +232,9 @@ router.get('/aMeasure/:id', readaMeasure);
 
 router.get('/allMarkers', readallMarkers);
 router.get('/aMarker/:id', readaMarker);
+router.get('/updateMarker/:id', updateMarker);
+router.post('/makeMarker', createMarker);
+router.delete('/delMarker/:id', deleteMarker);
 
 /*
 router.put('/players/:id', updatePlayer);
