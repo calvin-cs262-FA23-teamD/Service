@@ -58,6 +58,26 @@ function readtheUser(req, res, next) {
     });
 }
 
+function readallClickTracks(req, res, next) {
+  db.many('SELECT * FROM clicktrack;')
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function readaClickTrack(req, res, next) {
+  db.oneOrNone('SELECT * FROM clicktrack WHERE id=${id}', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 /* Just copied from the example repo, will need to adjust for all out SQL shit
 function updatePlayer(req, res, next) {
   db.oneOrNone('UPDATE Player SET email=${body.email},
@@ -92,8 +112,12 @@ function deletePlayer(req, res, next) {
 */
 
 router.get('/', readHelloMessage);
+
 router.get('/allUsers', readallUsers);
 router.get('/theUser/:id', readtheUser);
+
+router.get('/allClickTracks', readallClickTracks);
+router.get('/aClickTrack/:id', readaClickTrack);
 
 /*
 router.put('/players/:id', updatePlayer);
