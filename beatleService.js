@@ -60,6 +60,16 @@ function readtheUser(req, res, next) {
     });
 }
 
+function updateUser(req, res, next) {
+  db.oneOrNone('UPDATE theUser SET password=${body.password}, username=${body.username} WHERE id=${params.id} RETURNING id', req)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 // clickTrack related operations.
 function readallClickTracks(req, res, next) {
   db.many('SELECT * FROM clicktrack;')
@@ -160,6 +170,7 @@ router.get('/', readHelloMessage);
 
 router.get('/allUsers', readallUsers);
 router.get('/theUser/:id', readtheUser);
+router.get('/updateUser/:username/:password', updateUser);
 
 router.get('/allClickTracks', readallClickTracks);
 router.get('/aClickTrack/:id', readaClickTrack);
