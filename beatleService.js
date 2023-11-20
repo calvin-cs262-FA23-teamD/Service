@@ -26,6 +26,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 // Implement the CRUD operations.
 
+// Mysc. operations.
 function returnDataOr404(res, data) {
   if (data == null) {
     res.sendStatus(404);
@@ -38,6 +39,7 @@ function readHelloMessage(req, res) {
   res.send('I give you, The Beatle!');
 }
 
+// theUser related operations.
 function readallUsers(req, res, next) {
   db.many('SELECT * FROM theUser;')
     .then((data) => {
@@ -58,6 +60,7 @@ function readtheUser(req, res, next) {
     });
 }
 
+// clickTrack related operations.
 function readallClickTracks(req, res, next) {
   db.many('SELECT * FROM clicktrack;')
     .then((data) => {
@@ -70,6 +73,48 @@ function readallClickTracks(req, res, next) {
 
 function readaClickTrack(req, res, next) {
   db.oneOrNone('SELECT * FROM clicktrack WHERE id=${id}', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+// measure related operations.
+function readallMeasures(req, res, next) {
+  db.many('SELECT * FROM measure;')
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function readaMeasure(req, res, next) {
+  db.oneOrNone('SELECT * FROM measure WHERE id=${id}', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+// marker related operations.
+function readallMarkers(req, res, next) {
+  db.many('SELECT * FROM marker;')
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function readaMarker(req, res, next) {
+  db.oneOrNone('SELECT * FROM marker WHERE id=${id}', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -118,6 +163,12 @@ router.get('/theUser/:id', readtheUser);
 
 router.get('/allClickTracks', readallClickTracks);
 router.get('/aClickTrack/:id', readaClickTrack);
+
+router.get('/allMeasures', readallMeasures);
+router.get('/aMeasure/:id', readaMeasure);
+
+router.get('/allMarkers', readallMarkers);
+router.get('/aMarker/:id', readaMarker);
 
 /*
 router.put('/players/:id', updatePlayer);
