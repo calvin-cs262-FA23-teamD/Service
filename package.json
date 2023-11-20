@@ -2,7 +2,7 @@
     "main": "beatleService.js",
     "scripts": {
         "start": "node beatleService.js",
-        "lint": "eslint ."
+        "lint": "eslint . --fix"
     },
     "dependencies": {
         "express": "^4.18.2",
