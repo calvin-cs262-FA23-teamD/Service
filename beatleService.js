@@ -1,7 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
-// Set up the database connection.
+/* Set up the database connection. */
 
-// Using key-value pairs from ElephantSQL
+/* Using key-value pairs from ElephantSQL */
 const pgp = require('pg-promise')();
 
 const db = pgp({
@@ -12,8 +12,7 @@ const db = pgp({
   password: process.env.DB_PASSWORD,
 });
 
-// Configure the server and its routes.
-
+/* Configure the server and its routes. */
 const express = require('express');
 
 const app = express();
@@ -24,9 +23,8 @@ router.use(express.json());
 app.use(router);
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-// Implement the CRUD operations.
-
-// Mysc. operations.
+/* Implement the CRUD operations. */
+/* Mysc. operations. */
 function returnDataOr404(res, data) {
   if (data == null) {
     res.sendStatus(404);
@@ -39,7 +37,7 @@ function readHelloMessage(req, res) {
   res.send('I give you, The Beatle!');
 }
 
-// theUser related operations.
+/* theUser related operations. */
 function readallUsers(req, res, next) {
   db.many('SELECT * FROM theuser;')
     .then((data) => {
@@ -60,6 +58,7 @@ function readtheUser(req, res, next) {
     });
 }
 
+// Updates username and password.
 function updateUser(req, res, next) {
   db.oneOrNone('UPDATE theuser SET password=${body.password}, username=${body.username} WHERE id=${params.id} RETURNING id', req)
     .then((data) => {
@@ -70,6 +69,7 @@ function updateUser(req, res, next) {
     });
 }
 
+// Requires username and password.
 function createUser(req, res, next) {
   db.one('INSERT INTO theuser(username, password) VALUES (${username}, ${password}) RETURNING id', req.body)
     .then((data) => {
@@ -90,7 +90,7 @@ function deleteUser(req, res, next) {
     });
 }
 
-// clickTrack related operations.
+/* clickTrack related operations. */
 function readallClickTracks(req, res, next) {
   db.many('SELECT * FROM clicktrack;')
     .then((data) => {
@@ -111,6 +111,7 @@ function readaClickTrack(req, res, next) {
     });
 }
 
+// Updates name and date.
 function updateClickTrack(req, res, next) {
   db.oneOrNone('UPDATE clicktrack SET name=${body.name}, date=${body.date} WHERE id=${params.id} RETURNING id', req)
     .then((data) => {
@@ -121,6 +122,7 @@ function updateClickTrack(req, res, next) {
     });
 }
 
+// Requires userID, name, and date.
 function createClickTrack(req, res, next) {
   db.one('INSERT INTO clicktrack(userID, name, date) VALUES (${userID}, ${name}, ${date}) RETURNING id', req.body)
     .then((data) => {
@@ -141,7 +143,7 @@ function deleteClickTrack(req, res, next) {
     });
 }
 
-// measure related operations.
+/* measure related operations. */
 function readallMeasures(req, res, next) {
   db.many('SELECT * FROM measure;')
     .then((data) => {
@@ -162,9 +164,9 @@ function readaMeasure(req, res, next) {
     });
 }
 
-//
+// Updates measurenum, timesig, tempo, and sound
 function updateMeasure(req, res, next) {
-  db.oneOrNone('UPDATE measure SET measurenum=${body.clickTrackID}, timesig=${body.timesig}, tempo=${body.tempo}, sound=${body.sound} WHERE id=${params.id} RETURNING id', req)
+  db.oneOrNone('UPDATE measure SET measurenum=${body.measurenum}, timesig=${body.timesig}, tempo=${body.tempo}, sound=${body.sound} WHERE id=${params.id} RETURNING id', req)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -173,7 +175,7 @@ function updateMeasure(req, res, next) {
     });
 }
 
-//
+// Requires clickTrackID, measurenum, timesig, tempo, and sound.
 function createMeasure(req, res, next) {
   db.one('INSERT INTO measure(clickTrackID, measurenum, timesig, tempo, sound) VALUES (${clickTrackID}, ${measurenum}, ${timesig}, ${tempo}, ${sound}) RETURNING id', req.body)
     .then((data) => {
@@ -194,7 +196,7 @@ function deleteMeasure(req, res, next) {
     });
 }
 
-// marker related operations.
+/* marker related operations. */
 function readallMarkers(req, res, next) {
   db.many('SELECT * FROM marker;')
     .then((data) => {
@@ -215,6 +217,7 @@ function readaMarker(req, res, next) {
     });
 }
 
+// Updates name.
 function updateMarker(req, res, next) {
   db.oneOrNone('UPDATE marker SET name=${body.name} WHERE id=${params.id} RETURNING id', req)
     .then((data) => {
@@ -225,6 +228,7 @@ function updateMarker(req, res, next) {
     });
 }
 
+// Requires ClickTrackID and name.
 function createMarker(req, res, next) {
   db.one('INSERT INTO marker(clickTrackID, name) VALUES (${clickTrackID}, ${name}) RETURNING id', req.body)
     .then((data) => {
@@ -245,7 +249,7 @@ function deleteMarker(req, res, next) {
     });
 }
 
-// Links
+/* Links */
 router.get('/', readHelloMessage);
 
 router.get('/allUsers', readallUsers);
