@@ -3,7 +3,8 @@
 
 /* Using key-value pairs from ElephantSQL */
 const pgp = require('pg-promise')();
-const cors = require('cors'); // Import the cors module
+// eslint-disable-next-line import/no-extraneous-dependencies
+const cors = require('cors')(); // Import the cors module
 
 const db = pgp({
   host: process.env.DB_SERVER,
