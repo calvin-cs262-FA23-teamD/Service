@@ -3,6 +3,7 @@
 
 /* Using key-value pairs from ElephantSQL */
 const pgp = require('pg-promise')();
+const cors = require('cors'); // Import the cors module
 
 const db = pgp({
   host: process.env.DB_SERVER,
@@ -20,6 +21,7 @@ const port = process.env.PORT || 3000;
 const router = express.Router();
 router.use(express.json());
 
+app.use(cors()); // Enable CORS for all routes
 app.use(router);
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
