@@ -256,7 +256,7 @@ function deleteMarker(req, res, next) {
 router.get('/', readHelloMessage);
 
 router.get('/allUsers', readallUsers);
-router.get('/theUser/:id', readtheUser);
+router.get('/theUser/:username/:password', readtheUser);
 router.get('/updateUser/:id', updateUser);
 router.post('/makeUser', createUser);
 router.delete('/delUser/:id', deleteUser);
