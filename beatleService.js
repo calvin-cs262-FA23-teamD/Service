@@ -52,7 +52,7 @@ function readallUsers(req, res, next) {
 }
 
 function readtheUser(req, res, next) {
-  db.oneOrNone('SELECT * FROM theuser WHERE id=${id}', req.params)
+  db.oneOrNone('SELECT id FROM theuser WHERE username LIKE ${username} AND password LIKE ${password}', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
