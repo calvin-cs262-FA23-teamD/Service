@@ -63,7 +63,7 @@ function readtheUser(req, res, next) {
 
 // Updates username and password.
 function updateUser(req, res, next) {
-  db.oneOrNone('UPDATE theuser SET password=${body.password}, username=${body.username} WHERE id=${params.id} RETURNING id', req)
+  db.oneOrNone('UPDATE theuser SET password=${body.password} AND username=${body.username} WHERE id=${params.id} RETURNING id', req)
     .then((data) => {
       returnDataOr404(res, data);
     })
