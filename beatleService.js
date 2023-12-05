@@ -147,7 +147,7 @@ function createClickTrack(req, res, next) {
 }
 
 function deleteClickTrack(req, res, next) {
-  db.oneOrNone('DELETE FROM clicktrack WHERE id=${id} RETURNING id', req.params)
+  db.oneOrNone('WITH DeletedMeasures AS (DELETE FROM Measure WHERE clickTrackID = ${id} RETURNING ID) DELETE FROM clickTrack WHERE ID = ${id} RETURNING ID;', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
