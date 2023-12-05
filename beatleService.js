@@ -115,7 +115,7 @@ function readaClickTrack(req, res, next) {
 }
 
 function readallClickTracksFromUser(req, res, next) {
-  db.oneOrNone('SELECT clickTrack.* FROM theUser JOIN clickTrack ON theUser.ID = clickTrack.userID WHERE theUser.username = ${username};', req.params)
+  db.oneOrNone('SELECT * FROM clickTrack WHERE userID = ${id} ORDER BY clickTrack.name ASC;', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -169,6 +169,16 @@ function readallMeasures(req, res, next) {
 
 function readaMeasure(req, res, next) {
   db.oneOrNone('SELECT * FROM measure WHERE id=${id}', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+function readallMeasuresFromClickTrack(req, res, next) {
+  db.oneOrNone('SELECT * FROM Measure WHERE clickTrackID = ${id} ORDER BY measure.id ASC;', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -273,13 +283,14 @@ router.delete('/delUser/:id', deleteUser);
 
 router.get('/allClickTracks', readallClickTracks);
 router.get('/aClickTrack/:id', readaClickTrack);
-router.get('/clickTracksFromUser/:username', readallClickTracksFromUser);
+router.get('/clickTracksFromUser/:id', readallClickTracksFromUser);
 router.get('/updateClickTrack/:id', updateClickTrack);
 router.post('/makeClickTrack', createClickTrack);
 router.delete('/delClickTrack/:id', deleteClickTrack);
 
 router.get('/allMeasures', readallMeasures);
 router.get('/aMeasure/:id', readaMeasure);
+router.get('/allMeasuresFromClickTrack/:id', readallMeasuresFromClickTrack);
 router.put('/updateMeasure/:id', updateMeasure);
 router.post('/makeMeasure', createMeasure);
 router.delete('/delMeasure/:id', deleteMeasure);
