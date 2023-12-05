@@ -114,6 +114,16 @@ function readaClickTrack(req, res, next) {
     });
 }
 
+function readaClickTracksFromUser(req, res, next) {
+  db.oneOrNone('SELECT clickTrack.* FROM theUser JOIN clickTrack ON theUser.ID = clickTrack.userID WHERE theUser.username = ${username};', req.params)
+    .then((data) => {
+      returnDataOr404(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 // Updates name and date.
 function updateClickTrack(req, res, next) {
   db.oneOrNone('UPDATE clicktrack SET name=${body.name}, date=${body.date} WHERE id=${params.id} RETURNING id', req)
@@ -263,6 +273,7 @@ router.delete('/delUser/:id', deleteUser);
 
 router.get('/allClickTracks', readallClickTracks);
 router.get('/aClickTrack/:id', readaClickTrack);
+router.get('/clickTracksFromUser/:username', readaClickTracksFromUser);
 router.get('/updateClickTrack/:id', updateClickTrack);
 router.post('/makeClickTrack', createClickTrack);
 router.delete('/delClickTrack/:id', deleteClickTrack);
