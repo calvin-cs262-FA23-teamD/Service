@@ -1,6 +1,44 @@
 /* eslint-disable no-template-curly-in-string */
-/* Set up the database connection. */
 
+/*
+beatleService.js
+This file contains the code that ties the database to the app for
+  The Beatle metronome project.
+
+SQL Tables:
+theUser: ID, username, and password
+clickTrack: ID, userID, name, and date
+Measure: ID, clickTrackID, measureNum, timeSig, tempo, and sound
+Marker: ID, clickTrackID, and name
+
+General Operations:
+/all_tableName_ :
+  gets all listings with all the information from the respective table.
+
+/a_tableName_/:id' : for all tables except theUser,
+  gets all information from specific listing using the ID.
+
+/update_tableName_/:id :
+  updates all information for respective listing except for ID variables using the ID,
+
+/make_tableName_ :
+  creates listing in respective table.
+
+/del_tableName_/:id :
+  deletes specific listing using the ID.
+
+Unique Operations:
+/theUser/:username/:password :
+  gets the ID from specific user using the username and password.
+
+/clickTracksFromUser/:id :
+  gets all listings from clickTracks tied to specific user using the user's ID.
+
+/allMeasuresFromClickTrack/:id :
+  gets all listings from measure tied to specific clickTrack using the clickTrack's ID.
+*/
+
+/* Set up the database connection. */
 /* Using key-value pairs from ElephantSQL */
 const pgp = require('pg-promise')();
 // eslint-disable-next-line import/no-extraneous-dependencies
