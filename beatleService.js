@@ -153,7 +153,7 @@ function readaClickTrack(req, res, next) {
 }
 
 function readallClickTracksFromUser(req, res, next) {
-  db.oneOrNone('SELECT * FROM clickTrack JOIN theUser ON clickTrack.userID = theUser.ID WHERE theUser.ID = ${id} ORDER BY clickTrack.name ASC;', req.params)
+  db.oneOrNone('SELECT clickTrack.* FROM clickTrack JOIN theUser ON clickTrack.userID = theUser.ID WHERE theUser.ID = $1 ORDER BY clickTrack.name ASC;', [req.params.id])
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -321,7 +321,7 @@ router.delete('/delUser/:id', deleteUser);
 
 router.get('/allClickTracks', readallClickTracks);
 router.get('/aClickTrack/:id', readaClickTrack);
-router.get('/clickTracksFromUser/:id', readallClickTracksFromUser);
+router.get('/user/:id/clicktracks', readallClickTracksFromUser);
 router.get('/updateClickTrack/:id', updateClickTrack);
 router.post('/makeClickTrack', createClickTrack);
 router.delete('/delClickTrack/:id', deleteClickTrack);
