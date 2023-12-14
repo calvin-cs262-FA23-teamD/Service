@@ -154,9 +154,9 @@ function readaClickTrack(req, res, next) {
 
 function readallClickTracksFromUser(req, res, next) {
   const id = req.params.id; // Assuming ID is in the 'id' parameter
-  db.oneOrNone('SELECT clickTrack.* FROM clickTrack INNER JOIN theUser ON clickTrack.userID = theUser.ID WHERE theUser.ID = $1 ORDER BY clickTrack.name ASC;', [id])
+  db.oneOrNone('SELECT clickTrack.* FROM clickTrack LEFT JOIN theUser ON clickTrack.userID = theUser.ID WHERE theUser.ID = $1 ORDER BY clickTrack.name ASC;', [id])
     .then((data) => {
-      returnDataOr404(res, data);
+      returnDataOr404(res, data);/
     })
     .catch((err) => {
       next(err);
