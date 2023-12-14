@@ -153,9 +153,16 @@ function readaClickTrack(req, res, next) {
 }
 
 function readallClickTracksFromUser(req, res, next) {
-  db.oneOrNone('SELECT * FROM clickTrack JOIN theUser ON clickTrack.userID = theUser.ID WHERE theUser.ID = ${id} ORDER BY clickTrack.name ASC;', req.params)
+  const id = req.params.id;
+  db.one('SELECT ID FROM theUser WHERE ID = $1', [id]) // Get the user ID first
+    .then((user) => {
+      if (!user) { // Check if user exists
+        return next(new Error('User not found'));
+      }
+      return db.any('SELECT * FROM clickTrack WHERE userID = $1 ORDER BY name ASC;', [user.ID]); // Get clicktracks for that user
+    })
     .then((data) => {
-      returnDataOr404(res, data);
+      returnDataOr404(res, data); // Return clicktracks or 404 if none found
     })
     .catch((err) => {
       next(err);
