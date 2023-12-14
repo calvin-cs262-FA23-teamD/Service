@@ -217,7 +217,8 @@ function readaMeasure(req, res, next) {
 }
 
 function readallMeasuresFromClickTrack(req, res, next) {
-  db.oneOrNone('SELECT * FROM Measure WHERE clickTrackID = ${id} ORDER BY measure.id ASC;', req.params)
+//db.oneOrNone('SELECT * FROM Measure WHERE clickTrackID = ${id} ORDER BY measure.id ASC;', req.params)
+  db.oneOrNone('SELECT * FROM Measure WHERE clickTrackID = ${id}', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
