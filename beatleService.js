@@ -153,7 +153,7 @@ function readaClickTrack(req, res, next) {
 }
 
 function readallClickTracksFromUser(req, res, next) {
-  db.oneOrNone('SELECT * FROM clickTrack WHERE userID = ${id} ORDER BY clickTrack.name ASC;', req.params)
+  db.oneOrNone('SELECT * FROM clickTrack WHERE userID = ${userID} ORDER BY clickTrack.name ASC;', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
